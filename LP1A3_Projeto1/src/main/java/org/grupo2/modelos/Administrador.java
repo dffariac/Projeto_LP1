@@ -10,6 +10,7 @@ import org.grupo2.interfaces.GerenciamentoDeUsuarios;
 public class Administrador extends Usuario implements GerenciamentoDeUsuarios, GerenciamentoDeLivros {
 
     private int id;
+    private int keychave = 0;
 
     public Administrador(int id, String nome, String cpf, String endereco, String email, String senha) {
         super(nome, cpf, endereco, email, senha);
@@ -95,51 +96,35 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     @Override
     public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao,
                                int numExemplares, int numExemplaresDisponiveis) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'cadastrarLivro'");
-    }
-
-    @Override
-    public void atualizarLivro(Livro livro) {
-        Scanner scan = new Scanner(System.in);
-        for (int i = 0; i < bdLivro.size(); i++) {
-            if (livro.equals(bdLivro.getClass())) {
-                System.out.println("O que deseja atualizar? \n" +
-                        "1- Titulo \n " +
-                        "2 - Autor \n " +
-                        "3 - Quantidade disponivel \n" +
-                        "4- Id do livro");
-                int opcao = scan.nextInt();
-                switch (opcao) {
-                    case 1:
-                        System.out.println("Digite o novo nome do livro:");
-                        String mudaNome = scan.next();
-                        livro.setTitulo(mudaNome);
-                        break;
-                    case 2:
-                        System.out.println("Digite o novo nome do Autor:");
-                        String mudaAutor = scan.next();
-                        livro.setAutor(mudaAutor);
-                        break;
-                    case 3:
-                        System.out.println("Digite a nova quantidade disponivel:");
-                        int mudaQuantidade = scan.nextInt();
-                        livro.setNumExemplaresDisponiveis(mudaQuantidade);
-                        break;
-                    case 4:
-                        System.out.println("Digite o novo ID:");
-                        int mudaID = scan.nextInt();
-                        livro.setId(mudaID);
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                }
-                scan.close();
-
+        Livro livro = new Livro(id, titulo, autor, editora,anoPublicacao, numExemplares,numExemplaresDisponiveis);
+        keychave++;
+        for(int i = 0; i < bdLivro.size(); i++) {
+            if (livro.equals(bdLivro.get(i))){
+                System.out.println("Livro já existe");
+                break;
+            }
+            else {
+                bdLivro.put(keychave,livro);
+                System.out.println("Livro cadastrado com sucesso");
             }
         }
 
-        }
+            }
+
+    public Livro atualizarLivro(Livro livro) {
+
+            Livro atualizacaoLivro = buscarLivro(livro);
+
+            atualizacaoLivro.setTitulo(livro.getTitulo());
+            atualizacaoLivro.setAutor(livro.getAutor());
+            atualizacaoLivro.setEditora(livro.getEditora());
+            atualizacaoLivro.setAnoPublicacao(livro.getAnoPublicacao());
+            atualizacaoLivro.setNumExemplares(livro.getNumExemplares());
+            atualizacaoLivro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis());
+
+            return atualizacaoLivro;
+
+            }
 
     @Override
     public void removerLivro(Livro livro) {
@@ -153,13 +138,13 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     }
 
     @Override
-        public void buscarLivro (Livro livro){
+        public Livro buscarLivro (Livro livro){
             for (int i = 0; i < bdLivro.size(); i++) {
                 System.out.println("Id: " + bdLivro.get(i).getId() + "\n Nome: " +
                         bdLivro.get(i).getTitulo() + "\n Disponiveis:" + bdLivro.get(i).getNumExemplaresDisponiveis());
 
             }
-
+        return livro;
     }
 
     @Override
@@ -179,44 +164,9 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     @Override
     public void atualizarUsuario(Usuario usuario) {
         Scanner scan = new Scanner(System.in);
-        for (int i = 0; i < bdLivro.size(); i++) {
-            if (usuario.equals(bdUsuario.getClass())) {
-                System.out.println("O que deseja atualizar? \n" +
-                        "1- Nome \n " +
-                        "2 - Email \n " +
-                        "3 - Endereço \n" +
-                        "4- Id do usuario");
-                int opcao = scan.nextInt();
-                switch (opcao) {
-                    case 1:
-                        System.out.println("Digite o novo nome do usuário:");
-                        String mudaNome = scan.next();
-                        usuario.setNome(mudaNome);
-                        break;
-                    case 2:
-                        System.out.println("Digite o novo nome email:");
-                        String mudaEmail = scan.next();
-                        usuario.setEmail(mudaEmail);
-                        break;
-                    case 3:
-                        System.out.println("Digite o novo endereço do Usuário:");
-                        String mudaEndereco = scan.next();
-                        usuario.setEndereco(mudaEndereco);
-                        break;
-                    case 4:
-                        System.out.println("Digite a nova senha:");
-                        String mudaSenha = scan.next();
-                        usuario.setSenha(mudaSenha);
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                }
-                scan.close();
 
             }
-        }
 
-    }
 
     @Override
     public void removerUsuario(Usuario usuario) {

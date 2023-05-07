@@ -46,26 +46,26 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         super.devolverLivro(livro);
     }
 
-    @Override
-    public void reservarLivro(int id, Livro livro, Cliente cliente) throws Exception{
-        super.reservarLivro(id, livro, cliente);
-    }
+    // @Override
+    // public void reservarLivro(int id, Livro livro, Cliente cliente) throws Exception{
+    //     super.reservarLivro(id, livro, cliente);
+    // }
 
-    @Override
-    public void cancelarReserva(Livro livro, Cliente cliente) throws Exception{
-        super.cancelarReserva(livro, cliente);
-    }
+    // @Override
+    // public void cancelarReserva(Livro livro, Cliente cliente) throws Exception{
+    //     super.cancelarReserva(livro, cliente);
+    // }
 
     @Override
     public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao, int numExemplares, int numExemplaresDisponiveis){
         Livro livro = new Livro(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
-        Biblioteca.getLivros().put(48, livro);
+        //Biblioteca.getLivros().put(48, livro);
         //receber dados do livro
         //Salvar livro no mapa de dados
     }
 
     @Override
-    public void atualizarLivro(Livro livro){
+    public Livro atualizarLivro(Livro livro){
         Scanner scan = new Scanner(System.in);
         for (int i = 0; i < bdLivro.size(); i++) {
             if (livro.equals(bdLivro.getClass())) {

@@ -3,7 +3,7 @@ package org.grupo2.modelos;
 import java.util.Objects;
 
 public class Livro {
-    public static Object Emprestimo;
+    public Object Emprestimo;
     private int id;
     private String titulo;
     private String autor;

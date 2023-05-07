@@ -26,11 +26,12 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         this.id = id;
     }
     
-    
+    //TO DO, Precisa bastante trabalho
     public void realizarEmprestimo(){
-        Livro.emprestar();
+        Livro.emprestar(livro, cliente);
     }
-
+    
+    //TO DO, Precisa bastante trabalho
     public void realizarDevolucao(){
         devolverLivro();
     }
@@ -57,11 +58,10 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     }
 
     @Override
-    public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao, int numExemplares, int numExemplaresDisponiveis){
-        Livro livro = new Livro(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
-        Biblioteca.getLivros().put(48, livro);
-        //receber dados do livro
-        //Salvar livro no mapa de dados
+    public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao,
+                               int numExemplares, int numExemplaresDisponiveis) {
+
+        throw new UnsupportedOperationException("Unimplemented method 'cadastrarLivro'");
     }
 
     @Override

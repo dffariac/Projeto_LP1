@@ -1,5 +1,6 @@
 package org.grupo2.modelos;
 
+import org.grupo2.modelos.Emprestimo;
 import java.util.Objects;
 
 public class Livro {

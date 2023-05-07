@@ -27,7 +27,7 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     
     
     public void realizarEmprestimo(){
-        emprestarLivro();
+        Livro.emprestar();
     }
 
     public void realizarDevolucao(){

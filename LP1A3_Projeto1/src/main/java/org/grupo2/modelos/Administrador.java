@@ -28,7 +28,8 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     Map<Integer, Livro> bdLivro = Biblioteca.getLivros();
 
     public void cadastrarFuncionario(Funcionario funcionario) {
-        bdFuncionario.put(null, funcionario);
+        keychave ++;
+        bdFuncionario.put(keychave, funcionario);
         bdUsuario.put(null, funcionario);
         for (int i = 0; i < bdFuncionario.size(); i++) {
             if (funcionario.getNome().equals(bdFuncionario.get(i).getNome())) {
@@ -163,8 +164,16 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     }
 
     @Override
-    public void atualizarUsuario(Usuario usuario) {
+    public Usuario atualizarUsuario(Usuario usuario) {
+        Usuario atualizacaoUsuario = buscarUsuario(usuario);
 
+        atualizacaoUsuario.setNome(usuario.getNome());
+        atualizacaoUsuario.setCpf(usuario.getCpf());
+        atualizacaoUsuario.setEndereco(usuario.getEndereco());
+        atualizacaoUsuario.setSenha(usuario.getSenha());
+        atualizacaoUsuario.setEmail(usuario.getEmail());
+
+        return usuario;
 
             }
 
@@ -188,7 +197,7 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     }
 
     @Override
-    public void buscarUsuario(Usuario usuario) {
+    public Usuario buscarUsuario(Usuario usuario) {
         try {
             for (int i = 0; i < bdUsuario.size(); i++) {
                 if (usuario.equals(bdUsuario.get(i))) {
@@ -199,7 +208,7 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
         } catch (Exception error) {
             System.out.println("Usuaŕio não encontrado");
         }
-
+return  usuario;
     }
 }
 

@@ -6,9 +6,9 @@ public interface GerenciamentoDeUsuarios{
 
     public void cadastrarUsuario(Usuario usuario);
 
-    public void atualizarUsuario(Usuario usuario);
+    public Usuario atualizarUsuario(Usuario usuario);
 
     public void removerUsuario(Usuario usuario);
 
-    public void buscarUsuario(Usuario usuario);
+    public Usuario buscarUsuario(Usuario usuario);
 }

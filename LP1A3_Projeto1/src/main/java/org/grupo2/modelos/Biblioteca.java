@@ -1,10 +1,8 @@
 package org.grupo2.modelos;
 
+import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import org.grupo2.consumidores.ConsumidorAdministrador;
-import org.grupo2.consumidores.ConsumidorCliente;
-import org.grupo2.consumidores.ConsumidorFuncionario;
-import org.grupo2.consumidores.ConsumidorLivro;
+import org.grupo2.consumidores.*;
 import org.grupo2.handlers.AdministradorHandler;
 import org.grupo2.handlers.ClienteHandler;
 import org.grupo2.handlers.FuncionarioHandler;
@@ -81,7 +79,7 @@ public class Biblioteca {
         server.createContext("/funcionarios", new FuncionarioHandler());
         server.createContext("/administradores", new AdministradorHandler());
         server.createContext("/livros", new LivroHandler());
-        server.createContext("/emprestimos", new EmprestimoHandler());
+        HttpContext context = server.createContext("/emprestimos", new EmprestimoHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("\nServidor iniciado na porta " + PORT + ".");
@@ -189,6 +187,16 @@ public class Biblioteca {
     }
 
     public void listarEmprestimosCliente(Cliente cliente) {
+        try {
+            for (int i = 0; i < emprestimos.size(); i++){
+                if (emprestimos.get(i).getCliente().equals(cliente)) {
+                    System.out.println(emprestimos.get(i).getCliente().equals(cliente));
+                    break;
+                }
+            }
+        } catch (Exception erroEmprestimoClinete){
+            System.out.println("Empréstimo não encontrado");
+        }
 
     }
 // Lista os emprestimos em uma data

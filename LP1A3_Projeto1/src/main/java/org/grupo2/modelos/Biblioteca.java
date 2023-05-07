@@ -113,9 +113,7 @@ public class Biblioteca {
         return administradores;
     }
 
-    public Livro retornaLivro(String nome) {
-        return nome;
-    }
+
 
     public void listarLivros() {
     for (int i=0; i < livros.size(); i++) {
@@ -177,16 +175,34 @@ public class Biblioteca {
     }
 
     public void listarEmprestimosCliente(Cliente cliente) {
-        // TODO: 24/04/2023
-    }
 
+    }
+// Lista os emprestimos em uma data
     public void listarEmprestimosData(Date data) {
-        // TODO: 24/04/2023
+         try {
+             for (int i = 0; i < emprestimos.size(); i++) {
+                 if (Objects.equals(data, emprestimos.get(i).getDataEmprestimo())) {
+                     System.out.println("Livro :" + emprestimos.get(i).getLivro() + "\n Data empréstimo:" +
+                             emprestimos.get(i).getDataEmprestimo());
+
+                 }
+             }
+         }
+         catch (Exception erroData ) {
+             System.out.println("Data de emprestimo não encontrada");
+         }
     }
 
     public void login(String cpf, String senha) {
-        // TODO: 24/04/2023
+        for (int i = 0; i < usuario.size(); i++) {
+            if (usuario.get(i).getSenha().equals(senha) && usuario.get(i).getCpf().equals(cpf)) {
+                System.out.println("Usuário autenticado");
+                break;
+        }
+
+            }
     }
+
 
     public static boolean existeEmprestimoPorId(int id) {
         return Objects.nonNull(emprestimos.get(id));

@@ -3,6 +3,7 @@ package org.grupo2.modelos;
 import java.util.Objects;
 
 public class Livro {
+    public static Object Emprestimo;
     private int id;
     private String titulo;
     private String autor;
@@ -90,9 +91,22 @@ public class Livro {
         return Objects.hash(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
     }
 
-    public void emprestar() {
-        //TODO
+    
+    public Emprestimo emprestar(Livro livro, Cliente cliente) throws Exception{
+        //Executa as ações necessarias para realizar um empréstimo
+        //checa se o numero de exemplares disponiveis é maior q 0
+        if (livro.getNumExemplaresDisponiveis() > 0){
+            //reduz o numero de exemplares disponiveis
+            livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() - 1);
+            //cria objeto emprestimo
+            Emprestimo emprestimo = new Emprestimo(id, livro, cliente);
+            return emprestimo;
+        }
+        else{
+            throw new Exception("Não há exemplares disponíveis para empréstimo.");
+        }
     }
+    
 
     public static boolean devolver(Livro livro) throws Exception {
         if (livro.getNumExemplaresDisponiveis() < livro.getNumExemplares()) {

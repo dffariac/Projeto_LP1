@@ -28,15 +28,6 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         this.id = id;
     }
     
-<<<<<<< HEAD
-    //TO DO, Precisa bastante trabalho
-    public void realizarEmprestimo(){
-        Livro.emprestar(livro, cliente);
-    }
-    
-    //TO DO, Precisa bastante trabalho
-=======
-    
     public void realizarEmprestimo(int keychave, Cliente cliente, Livro livro) {
         keychave++;
         if (livro.getNumExemplaresDisponiveis() != 0) {
@@ -45,7 +36,6 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
             livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() -1);
         }
     }
->>>>>>> 8e6155343733bb6123acb97a8529f1f956631e61
     public void realizarDevolucao(){
 
     }

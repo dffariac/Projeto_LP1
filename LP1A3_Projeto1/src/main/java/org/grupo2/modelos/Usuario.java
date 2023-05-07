@@ -74,7 +74,7 @@ public abstract class Usuario{
             cancelarReserva(livro, cliente);
         }
         Emprestimo emprestimo = new Emprestimo(idEmprestimo, livro, cliente);
-        Biblioteca.salvaEmprestimo(emprestimo);
+        Biblioteca.salvarEmprestimo(emprestimo);
         System.out.println("Emprestimo realizado com sucesso");
     }
 

@@ -1,7 +1,6 @@
 package org.grupo2.modelos;
 
 import java.util.Objects;
-import org.grupo2.modelos.Emprestimo;
 
 public class Livro {
     private int id;
@@ -91,29 +90,15 @@ public class Livro {
         return Objects.hash(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
     }
 
-
-    public void emprestar(Livro livro, Cliente cliente) throws Exception{
-        //Executa as ações necessarias para realizar um empréstimo
-        //checa se o numero de exemplares disponiveis é maior q 0
-        if (livro.getNumExemplaresDisponiveis() > 0){
-            //reduz o numero de exemplares disponiveis
-            livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() - 1);
-            //cria objeto emprestimo
-            Emprestimo emprestimo = new Emprestimo(id, livro, cliente);
-        }
-        else{
-            throw new Exception("Não há exemplares disponíveis para empréstimo.");
-        }
+    public void emprestar() {
+        //TODO
     }
-    
-    
 
-    public static boolean devolver(Livro livro) throws Exception{
-        if (livro.getNumExemplaresDisponiveis() < livro.getNumExemplares()){
+    public static boolean devolver(Livro livro) throws Exception {
+        if (livro.getNumExemplaresDisponiveis() < livro.getNumExemplares()) {
             livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() + 1);
             return true;
-        } 
-        else{
+        } else {
             throw new Exception("Todos os livros já estão na biblioteca");
         }
     }
@@ -121,23 +106,24 @@ public class Livro {
     public static boolean livroDisponivel(Livro livro) {
         return livro.getNumExemplaresDisponiveis() > 0;
     }
+
     public String toJson() {
         return "{\"id\": " + this.getId() + ", \"titulo\": \"" + this.getTitulo() +
-                ", \"autor\": \"" + this.getAutor() + ", \"editora\": \"" + this.getEditora() +
-                ", \"anoPublicacao\": \"" + this.getAnoPublicacao() + ", \"numExemplares\": \"" + this.getNumExemplares() +
-                ", \"numExemplaresDisponiveis\": \"" + this.getNumExemplaresDisponiveis() + "\"}";
+                "\", \"autor\": \"" + this.getAutor() + "\", \"editora\": \"" + this.getEditora() +
+                "\", \"anoPublicacao\": " + this.getAnoPublicacao() + ", \"numExemplares\": " + this.getNumExemplares() +
+                ", \"numExemplaresDisponiveis\": " + this.getNumExemplaresDisponiveis() + "}";
     }
 
     public static Livro fromJson(String requestBody) {
         String requestBodyClean = requestBody.replace("{", "").replace("}","");
         String[] splitProperties = requestBodyClean.split(",");
-        int jsonId = Integer.parseInt(splitProperties[0].split(":")[1]);
-        String jsonTitulo = splitProperties[1].split(":")[1];
-        String jsonAutor = splitProperties[2].split(":")[1];
-        String jsonEditora = splitProperties[3].split(":")[1];
-        int jsonAnoPublicacao = Integer.parseInt(splitProperties[4].split(":")[1]);
-        int jsonNumExemplares = Integer.parseInt(splitProperties[5].split(":")[1]);
-        int jsonNumExemplaresDisponiveis = Integer.parseInt(splitProperties[6].split(":")[1]);
+        int jsonId = Integer.parseInt(splitProperties[0].split(":")[1].trim());
+        String jsonTitulo = splitProperties[1].split(":")[1].trim().replace("\"", "");
+        String jsonAutor = splitProperties[2].split(":")[1].trim().replace("\"", "");
+        String jsonEditora = splitProperties[3].split(":")[1].trim().replace("\"", "");
+        int jsonAnoPublicacao = Integer.parseInt(splitProperties[4].split(":")[1].trim());
+        int jsonNumExemplares = Integer.parseInt(splitProperties[5].split(":")[1].trim());
+        int jsonNumExemplaresDisponiveis = Integer.parseInt(splitProperties[6].split(":")[1].trim());
         return new Livro (jsonId, jsonTitulo, jsonAutor, jsonEditora, jsonAnoPublicacao,
                 jsonNumExemplares, jsonNumExemplaresDisponiveis);
     }

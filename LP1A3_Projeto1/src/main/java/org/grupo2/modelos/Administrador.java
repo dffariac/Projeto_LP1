@@ -1,7 +1,5 @@
 package org.grupo2.modelos;
 import java.util.Map;
-import java.util.Scanner;
-
 import org.grupo2.interfaces.GerenciamentoDeLivros;
 import org.grupo2.interfaces.GerenciamentoDeUsuarios;
 
@@ -96,41 +94,40 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     @Override
     public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao,
                                int numExemplares, int numExemplaresDisponiveis) {
-        Livro livro = new Livro(id, titulo, autor, editora,anoPublicacao, numExemplares,numExemplaresDisponiveis);
+        Livro livro = new Livro(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
         keychave++;
-        for(int i = 0; i < bdLivro.size(); i++) {
-            if (livro.equals(bdLivro.get(i))){
+        for (int i = 0; i < bdLivro.size(); i++) {
+            if (livro.equals(bdLivro.get(i))) {
                 System.out.println("Livro já existe");
                 break;
-            }
-            else {
-                bdLivro.put(keychave,livro);
+            } else {
+                bdLivro.put(keychave, livro);
                 System.out.println("Livro cadastrado com sucesso");
             }
         }
 
-            }
+    }
 
     public Livro atualizarLivro(Livro livro) {
 
-            Livro atualizacaoLivro = buscarLivro(livro);
+        Livro atualizacaoLivro = buscarLivro(livro);
 
-            atualizacaoLivro.setTitulo(livro.getTitulo());
-            atualizacaoLivro.setAutor(livro.getAutor());
-            atualizacaoLivro.setEditora(livro.getEditora());
-            atualizacaoLivro.setAnoPublicacao(livro.getAnoPublicacao());
-            atualizacaoLivro.setNumExemplares(livro.getNumExemplares());
-            atualizacaoLivro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis());
+        atualizacaoLivro.setTitulo(livro.getTitulo());
+        atualizacaoLivro.setAutor(livro.getAutor());
+        atualizacaoLivro.setEditora(livro.getEditora());
+        atualizacaoLivro.setAnoPublicacao(livro.getAnoPublicacao());
+        atualizacaoLivro.setNumExemplares(livro.getNumExemplares());
+        atualizacaoLivro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis());
 
-            return atualizacaoLivro;
+        return atualizacaoLivro;
 
-            }
+    }
 
     @Override
     public void removerLivro(Livro livro) {
         for (int i = 0; i < bdLivro.size(); i++) {
             if (livro.equals(bdLivro.get(i))) {
-                bdLivro.remove(null, livro);
+                bdLivro.remove(keychave, livro);
                 System.out.println("Livro removido com sucesso");
             }
         }
@@ -138,12 +135,16 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
     }
 
     @Override
-        public Livro buscarLivro (Livro livro){
+    public Livro buscarLivro(Livro livro) {
+        try {
             for (int i = 0; i < bdLivro.size(); i++) {
                 System.out.println("Id: " + bdLivro.get(i).getId() + "\n Nome: " +
                         bdLivro.get(i).getTitulo() + "\n Disponiveis:" + bdLivro.get(i).getNumExemplaresDisponiveis());
 
             }
+        } catch (Exception erroBuscaLivro) {
+            System.out.println("Livro não encontrado");
+        }
         return livro;
     }
 
@@ -163,7 +164,7 @@ public class Administrador extends Usuario implements GerenciamentoDeUsuarios, G
 
     @Override
     public void atualizarUsuario(Usuario usuario) {
-        Scanner scan = new Scanner(System.in);
+
 
             }
 

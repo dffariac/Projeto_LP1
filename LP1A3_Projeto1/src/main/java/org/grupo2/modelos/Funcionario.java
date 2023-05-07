@@ -10,8 +10,10 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     
    
     private int id;
+    private int keychave = 0;
     Map<Integer, Usuario>bdUsuario = Biblioteca.getUsuario();
     Map<Integer, Livro> bdLivro = Biblioteca.getLivros();
+    Map<Integer, Emprestimo> bdEmprestimo = Biblioteca.getEmprestimos();
      //construtor
     public Funcionario(int id, String nome, String cpf, String endereco, String email, String senha) {
         super(nome, cpf, endereco, email, senha);
@@ -27,12 +29,16 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     }
     
     
-    public void realizarEmprestimo(){
-        Livro.emprestar();
+    public void realizarEmprestimo(int keychave, Cliente cliente, Livro livro) {
+        keychave++;
+        if (livro.getNumExemplaresDisponiveis() != 0) {
+            Emprestimo emprestimo = new Emprestimo(keychave, livro, cliente);
+            bdEmprestimo.put(keychave, emprestimo);
+            livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() -1);
+        }
     }
-
     public void realizarDevolucao(){
-        devolverLivro();
+
     }
 
     @Override
@@ -59,51 +65,24 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     @Override
     public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao, int numExemplares, int numExemplaresDisponiveis){
         Livro livro = new Livro(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
-        //Biblioteca.getLivros().put(48, livro);
-        //receber dados do livro
-        //Salvar livro no mapa de dados
-    }
-
-    @Override
-    public Livro atualizarLivro(Livro livro){
-        Scanner scan = new Scanner(System.in);
+        keychave++;
         for (int i = 0; i < bdLivro.size(); i++) {
-            if (livro.equals(bdLivro.getClass())) {
-                System.out.println("O que deseja atualizar? \n" +
-                        "1- Titulo \n " +
-                        "2 - Autor \n " +
-                        "3 - Quantidade disponivel \n" +
-                        "4- Id do livro");
-                int opcao = scan.nextInt();
-                switch (opcao) {
-                    case 1:
-                        System.out.println("Digite o novo nome do livro:");
-                        String mudaNome = scan.next();
-                        livro.setTitulo(mudaNome);
-                        break;
-                    case 2:
-                        System.out.println("Digite o novo nome do Autor:");
-                        String mudaAutor = scan.next();
-                        livro.setAutor(mudaAutor);
-                        break;
-                    case 3:
-                        System.out.println("Digite a nova quantidade disponivel:");
-                        int mudaQuantidade = scan.nextInt();
-                        livro.setNumExemplaresDisponiveis(mudaQuantidade);
-                        break;
-                    case 4:
-                        System.out.println("Digite o novo ID:");
-                        int mudaID = scan.nextInt();
-                        livro.setId(mudaID);
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                }
-                scan.close();
-
+            if (livro.equals(bdLivro.get(i))) {
+                System.out.println("Livro já existe");
+                break;
+            } else {
+                bdLivro.put(keychave, livro);
+                System.out.println("Livro cadastrado com sucesso");
             }
         }
     }
+
+    @Override
+    public Livro atualizarLivro(Livro livro) {
+
+    }
+
+
 
     @Override
     public void removerLivro(Livro livro){

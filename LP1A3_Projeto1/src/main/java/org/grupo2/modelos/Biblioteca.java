@@ -80,7 +80,7 @@ public class Biblioteca {
         server.createContext("/funcionarios", new FuncionarioHandler());
         server.createContext("/administradores", new AdministradorHandler());
         server.createContext("/livros", new LivroHandler());
-        HttpContext context = server.createContext("/emprestimos", new EmprestimoHandler());
+        server.createContext("/emprestimos", new EmprestimoHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("\nServidor iniciado na porta " + PORT + ".");
@@ -126,7 +126,14 @@ public class Biblioteca {
         return administradores;
     }
 
-
+    public static Livro buscarLivro(String titulo) {
+        for (int i = 0; i < getLivros().values().size(); i++) {
+            if (getLivros().get(i).getTitulo().equals(titulo)) {
+                return getLivros().get(i);
+            }
+        }
+        return null;
+    }
 
     public void listarLivros() {
     for (int i=0; i < livros.size(); i++) {
@@ -134,6 +141,20 @@ public class Biblioteca {
         livros.get(i).getTitulo() + "\n Disponiveis:" + livros.get(i).getNumExemplaresDisponiveis());
     }
     }
+    
+//     public static StringBuilder listarLivros() {
+//         StringBuilder response = new StringBuilder();
+//         response.append("[");
+//         for (Livro livro : Biblioteca.getLivros().values()) {
+//             response.append(livro.toJson());
+//             response.append(",");
+//         }
+//         if (Biblioteca.getLivros().size() > 0) {
+//             response.deleteCharAt(response.length() - 1);
+//         }
+//         response.append("]");
+//         return response;
+//     }
 
     public void buscarUsuarioNome(String nome) {
         try {
@@ -174,12 +195,65 @@ public class Biblioteca {
             System.out.println(clientes.get(i).toString());
            }
     }
+    
+   //   Versao com integracao com api
+//     public static StringBuilder listarClientes() {
+//         StringBuilder response = new StringBuilder();
+//         response.append("[");
+//         for (Cliente cliente : Biblioteca.getClientes().values()) {
+//             response.append(cliente.toJson());
+//             response.append(",");
+//         }
+//         if (Biblioteca.getClientes().size() > 0) {
+//             response.deleteCharAt(response.length() - 1);
+//         }
+//         response.append("]");
+//         return response;
+//     }
 
     public void listarFuncionarios() {
         for (int i = 0; i < funcionarios.size(); i++) {
             System.out.println(funcionarios.get(i).toString());
            }
     }
+    
+       //   Versao com integracao com api
+//     public static StringBuilder listarFuncionarios() {
+//         StringBuilder response = new StringBuilder();
+//         response.append("[");
+//         for (Funcionario funcionario : Biblioteca.getFuncionarios().values()) {
+//             response.append(funcionario.toJson());
+//             response.append(",");
+//         }
+//         if (Biblioteca.getFuncionarios().size() > 0) {
+//             response.deleteCharAt(response.length() - 1);
+//         }
+//         response.append("]");
+//         return response;
+//     }
+    
+    // Versao que junta os 3 maps com a api
+//     public static StringBuilder listarUsuarios() throws Exception {
+//         StringBuilder response = new StringBuilder();
+//         response.append("[");
+//         for (Cliente cliente : Biblioteca.getClientes().values()) {
+//             response.append(cliente.toJson());
+//             response.append(",");
+//         }
+//         for (Funcionario funcionario : Biblioteca.getFuncionarios().values()) {
+//             response.append(funcionario.toJson());
+//             response.append(",");
+//         }
+//         for (Administrador administrador : Biblioteca.getAdministradores().values()) {
+//             response.append(administrador.toJson());
+//             response.append(",");
+//         }
+//         if (Biblioteca.getClientes().size() > 0) {
+//             response.deleteCharAt(response.length() - 1);
+//         }
+//         response.append("]");
+//         return response;
+//     }
 
     public void listarEmprestimos() {
         for (int i = 0; i < emprestimos.size(); i++) {
@@ -200,6 +274,22 @@ public class Biblioteca {
         }
 
     }
+    
+    // Versao com integração na api
+//     public static StringBuilder listarEmprestimos() {
+//         StringBuilder response = new StringBuilder();
+//         response.append("[");
+//         for (Emprestimo emprestimo : Biblioteca.getEmprestimos().values()) {
+//             response.append(emprestimo.toJson());
+//             response.append(",");
+//         }
+//         if (Biblioteca.getEmprestimos().size() > 0) {
+//             response.deleteCharAt(response.length() - 1);
+//         }
+//         response.append("]");
+//         return response;
+//     }
+
 // Lista os emprestimos em uma data
     public void listarEmprestimosData(Date data) {
          try {
@@ -226,28 +316,29 @@ public class Biblioteca {
             }
     }
 
-
-    public static boolean existeEmprestimoPorId(int id) {
-        return Objects.nonNull(emprestimos.get(id));
+    public static boolean existeEmprestimoPorId(int id) throws Exception {
+        if (Objects.nonNull(emprestimos.get(id))) {
+            throw new Exception("Emprestimo já existente.");
+        }
+        return true;
     }
 
     public static void salvarEmprestimo(Emprestimo emprestimo) {
         emprestimos.put(Biblioteca.idEmprestimos + 1, emprestimo);
     }
 
-    public static void salvarReserva(Reserva reserva) {
-        reservas.put(Biblioteca.idReservas + 1, reserva);
+    public static Emprestimo salvarEmprestimo(Emprestimo emprestimo) {
+        getEmprestimos().put(emprestimo.getId(), emprestimo);
+        return emprestimo;
     }
 
-    public static Optional<Reserva> procurarReservaPorLivroECliente(Livro livro, Cliente cliente) {
-        Optional<Reserva> reservaOptional = Optional.empty();
-        for (int i = 1; i < reservas.size() + 1; i++) {
-            if (reservas.get(i).getLivro().equals(livro) && reservas.get(i).getCliente().equals(cliente)) {
-                reservaOptional = Optional.of(reservas.get(i));
-                break;
+    public static Reserva procurarReservaPorLivroECliente(Livro livro, Cliente cliente) {
+        for (int i = 1; i < getReservas().size() + 1; i++) {
+            if (getReservas().get(i).getLivro().equals(livro) && reservas.get(i).getCliente().equals(cliente)) {
+               return reservas.get(i);
             }
         }
-        return reservaOptional;
+        return null;
     }
 
     public static Optional<Reserva> procuraReservaPorId(int id) {

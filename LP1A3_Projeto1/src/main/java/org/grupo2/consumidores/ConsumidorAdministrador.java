@@ -52,7 +52,7 @@ public class ConsumidorAdministrador {
         response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println("PUT /administradores/" + id + ": " + response.body());
 
-        // DELETE /clientes/{id}
+        // DELETE /administradores/{id}
         request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + id))
                 .DELETE()

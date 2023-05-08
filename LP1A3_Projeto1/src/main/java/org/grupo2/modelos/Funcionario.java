@@ -44,6 +44,13 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
             throw new Exception("Não há exemplares disponíveis para empréstimo");
         }
     }
+   
+    // versao usando a classe pai
+//     @Override
+//     public Emprestimo realizarEmprestimo(int id, Livro livro, Cliente cliente, Instant dataEmprestimo, Instant dataDevolucao) throws Exception {
+//         return super.realizarEmprestimo(id, livro, cliente, dataEmprestimo, dataDevolucao);
+//     }
+    
     public void realizarDevolucao(){
         try(Scanner keyScanner = new Scanner(System.in)){
             System.out.print("Digite o ID do Empréstimo (Número):");

@@ -46,17 +46,7 @@ public class FuncionarioHandler implements HttpHandler {
 
     // READ ALL
 	private void handleGetFuncionarios(HttpExchange exchange) throws IOException {
-		StringBuilder response = new StringBuilder();
-		response.append("[");
-		for (Funcionario funcionario : Biblioteca.getFuncionarios().values()) {
-			response.append(funcionario.toJson());
-			response.append(",");
-		}
-		if (Biblioteca.getFuncionarios().size() > 0) {
-			response.deleteCharAt(response.length() - 1);
-		}
-		response.append("]");
-		sendResponse(exchange, response.toString());
+		sendResponse(exchange, Biblioteca.listarFuncionarios().toString());
 	}
 
     // READ

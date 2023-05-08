@@ -13,7 +13,7 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     private int keychave = 0;
     Map<Integer, Usuario>bdUsuario = Biblioteca.getUsuario();
     Map<Integer, Livro> bdLivro = Biblioteca.getLivros();
-    Map<Integer, Emprestimo> bdEmprestimo = Biblioteca.getEmprestimos();
+    static Map <Integer, Emprestimo> bdEmprestimo = Biblioteca.getEmprestimos();
      //construtor
     public Funcionario(int id, String nome, String cpf, String endereco, String email, String senha) {
         super(nome, cpf, endereco, email, senha);
@@ -28,16 +28,27 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         this.id = id;
     }
     
-    public void realizarEmprestimo(int keychave, Cliente cliente, Livro livro) {
-        keychave++;
-        if (livro.getNumExemplaresDisponiveis() != 0) {
+    public static void realizarEmprestimo(int keychave, Cliente cliente, Livro livro) throws Exception{
+        if (livro.getNumExemplaresDisponiveis() > 0){
+            keychave++;
             Emprestimo emprestimo = new Emprestimo(keychave, livro, cliente);
             bdEmprestimo.put(keychave, emprestimo);
             livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() -1);
         }
+        else{
+            throw new Exception("Não há exemplares disponíveis para empréstimo");
+        }
     }
     public void realizarDevolucao(){
+        try(Scanner keyScanner = new Scanner(System.in)){
+            System.out.print("Digite o ID do Empréstimo (Número):");
+            keychave = keyScanner.nextInt();
+        }
 
+        Emprestimo emprestimo = bdEmprestimo.get(keychave);
+        Livro livro = emprestimo.getLivro();
+        livro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis() + 1);
+        bdEmprestimo.remove(keychave);
     }
 
     @Override
@@ -51,32 +62,20 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         super.devolverLivro(livro);
     }
 
-    // @Override
-    // public void reservarLivro(int id, Livro livro, Cliente cliente) throws Exception{
-    //     super.reservarLivro(id, livro, cliente);
-    // }
-
-    // @Override
-    // public void cancelarReserva(Livro livro, Cliente cliente) throws Exception{
-    //     super.cancelarReserva(livro, cliente);
-    // }
-
     @Override
-<<<<<<< HEAD
-    public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao,
-                               int numExemplares, int numExemplaresDisponiveis) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'cadastrarLivro'");
+    public void reservarLivro(int id, Livro livro, Cliente cliente) throws Exception{
+        super.reservarLivro(id, livro, cliente);
     }
 
     @Override
-    public void atualizarLivro(Livro livro){
-        Scanner scan = new Scanner(System.in);
-=======
+    public void cancelarReserva(Livro livro, Cliente cliente) throws Exception{
+        super.cancelarReserva(livro, cliente);
+    }
+
+    @Override
     public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao, int numExemplares, int numExemplaresDisponiveis){
         Livro livro = new Livro(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
         keychave++;
->>>>>>> 8e6155343733bb6123acb97a8529f1f956631e61
         for (int i = 0; i < bdLivro.size(); i++) {
             if (livro.equals(bdLivro.get(i))) {
                 System.out.println("Livro já existe");
@@ -90,7 +89,17 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
 
     @Override
     public Livro atualizarLivro(Livro livro) {
+        
+        Livro atualizacaoLivro = buscarLivro(livro);
 
+        atualizacaoLivro.setTitulo(livro.getTitulo());
+        atualizacaoLivro.setAutor(livro.getAutor());
+        atualizacaoLivro.setEditora(livro.getEditora());
+        atualizacaoLivro.setAnoPublicacao(livro.getAnoPublicacao());
+        atualizacaoLivro.setNumExemplares(livro.getNumExemplares());
+        atualizacaoLivro.setNumExemplaresDisponiveis(livro.getNumExemplaresDisponiveis());
+
+        return atualizacaoLivro;
     }
 
 
@@ -106,8 +115,17 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     }
 
     @Override
-    public void buscarLivro (Livro livro){
-    
+    public Livro buscarLivro (Livro livro){
+        try {
+            for (int i = 0; i < bdLivro.size(); i++) {
+                System.out.println("Id: " + bdLivro.get(i).getId() + "\n Nome: " +
+                        bdLivro.get(i).getTitulo() + "\n Disponiveis:" + bdLivro.get(i).getNumExemplaresDisponiveis());
+
+            }
+        } catch (Exception erroBuscaLivro) {
+            System.out.println("Livro não encontrado");
+        }
+        return livro;
     }
 
     @Override
@@ -194,7 +212,7 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         }
 
     }
-    }
+    
     
     public String toJson() {
         return "{\"id\": " + this.getId() + ", \"nome\": \"" + this.getNome() +

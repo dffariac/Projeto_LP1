@@ -1,12 +1,11 @@
 package org.grupo2.modelos;
 
+import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import org.grupo2.consumidores.ConsumidorAdministrador;
-import org.grupo2.consumidores.ConsumidorCliente;
-import org.grupo2.consumidores.ConsumidorFuncionario;
-import org.grupo2.consumidores.ConsumidorLivro;
+import org.grupo2.consumidores.*;
 import org.grupo2.handlers.AdministradorHandler;
 import org.grupo2.handlers.ClienteHandler;
+import org.grupo2.handlers.EmprestimoHandler;
 import org.grupo2.handlers.FuncionarioHandler;
 import org.grupo2.handlers.LivroHandler;
 
@@ -25,7 +24,7 @@ public class Biblioteca {
     private static Map<Integer, Administrador> administradores = new HashMap<Integer, Administrador>();
     private static Map<Integer, Emprestimo> emprestimos = new HashMap<Integer, Emprestimo>();
     private static Map<Integer, Reserva> reservas = new HashMap<Integer, Reserva>();
-    private static Map<Integer,Usuario> usuario = new HashMap<Integer, Usuario>();
+    private static Map<Integer, Usuario> usuario = new HashMap<Integer, Usuario>();
     
   
 
@@ -56,13 +55,24 @@ public class Biblioteca {
     private static final int PORT = 8080;
 
     public static void startServer() throws IOException, InterruptedException {
-        // clientes
-        clientes.put(1, new Cliente(1,"Nome Cliente 1", "100.000.000-01", "Endereco Cliente 1", "cliente1@email.com", "senha_cliente1"));
+        // Clientes
+        Cliente cliente1 = new Cliente(1, "Nome Cliente 1", "100.000.000-01", "Endereco Cliente 1", "cliente1@email.com", "senha_cliente1");
+        clientes.put(1, cliente1);
+
+        // Funcionarios
         funcionarios.put(1, new Funcionario(1,"Nome Funcionario 1", "200.000.000-01", "Endereco Funcionario 1", "funcionario1@email.com", "senha_funcionario1"));
+
+        // Administradores
         administradores.put(1, new Administrador(1,"Nome Administrador 1", "300.000.000-01", "Endereco Administrador 1", "administrador1@email.com", "senha_administrador1"));
-        livros.put(1,  new Livro(1,"Harry Potter e a Pedra Filosofal","J.K Rowling","Rocco",1997,12,12));
+
+        // Livros
+        Livro livro1 = new Livro(1, "Harry Potter e a Pedra Filosofal", "J.K Rowling", "Rocco", 1997, 12, 12);
+        livros.put(1, livro1);
         livros.put(2,  new Livro(2,"Harry Potter e a Camara Secreta","J.K Rowling","Rocco",1998,10,10));
         livros.put(3,  new Livro(3,"Harry Potter e o Prisioneiro de Azkaban","J.K Rowling","Rocco",1999,13,9));
+
+        // Emprestimos
+        emprestimos.put(1, new Emprestimo(1, livro1, cliente1));
 
         // start server
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
@@ -70,6 +80,7 @@ public class Biblioteca {
         server.createContext("/funcionarios", new FuncionarioHandler());
         server.createContext("/administradores", new AdministradorHandler());
         server.createContext("/livros", new LivroHandler());
+        HttpContext context = server.createContext("/emprestimos", new EmprestimoHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("\nServidor iniciado na porta " + PORT + ".");
@@ -83,6 +94,8 @@ public class Biblioteca {
         ConsumidorAdministrador.main(null);
         System.out.println("\n*** ACTIONS DO MODELO Livro ***");
         ConsumidorLivro.main(null);
+        System.out.println("\n*** ACTIONS DO MODELO Emprestimo ***");
+        ConsumidorEmprestimo.main(null);
 
         // stop server
         server.stop(0);
@@ -175,6 +188,16 @@ public class Biblioteca {
     }
 
     public void listarEmprestimosCliente(Cliente cliente) {
+        try {
+            for (int i = 0; i < emprestimos.size(); i++){
+                if (emprestimos.get(i).getCliente().equals(cliente)) {
+                    System.out.println(emprestimos.get(i).getCliente().equals(cliente));
+                    break;
+                }
+            }
+        } catch (Exception erroEmprestimoClinete){
+            System.out.println("Empréstimo não encontrado");
+        }
 
     }
 // Lista os emprestimos em uma data

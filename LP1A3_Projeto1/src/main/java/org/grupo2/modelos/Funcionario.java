@@ -6,9 +6,10 @@ import java.util.Scanner;
 import org.grupo2.interfaces.GerenciamentoDeLivros;
 import org.grupo2.interfaces.GerenciamentoDeUsuarios;
 
+import static org.grupo2.modelos.Biblioteca.usuario;
+
 public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, GerenciamentoDeLivros {
-    
-   
+
     private int id;
     private int keychave = 0;
     Map<Integer, Usuario>bdUsuario = Biblioteca.getUsuario();
@@ -20,6 +21,8 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         this.id = id;
     }
 
+    //Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -27,6 +30,8 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     public void setId(int id) {
         this.id = id;
     }
+
+    // Métodos da classe
     
     public static void realizarEmprestimo(int keychave, Cliente cliente, Livro livro) throws Exception{
         if (livro.getNumExemplaresDisponiveis() > 0){
@@ -62,7 +67,7 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
         super.devolverLivro(livro);
     }
 
-    @Override
+     @Override
     public void reservarLivro(int id, Livro livro, Cliente cliente) throws Exception{
         super.reservarLivro(id, livro, cliente);
     }
@@ -70,12 +75,12 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     @Override
     public void cancelarReserva(Livro livro, Cliente cliente) throws Exception{
         super.cancelarReserva(livro, cliente);
-    }
+     }
 
-    @Override
-    public void cadastrarLivro(int id, String titulo, String autor, String editora, int anoPublicacao, int numExemplares, int numExemplaresDisponiveis){
+    public void cadastrarLivro ( int id, String titulo, String autor, String editora, int anoPublicacao, int numExemplares, int numExemplaresDisponiveis){
         Livro livro = new Livro(id, titulo, autor, editora, anoPublicacao, numExemplares, numExemplaresDisponiveis);
         keychave++;
+
         for (int i = 0; i < bdLivro.size(); i++) {
             if (livro.equals(bdLivro.get(i))) {
                 System.out.println("Livro já existe");
@@ -143,40 +148,6 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
 
     @Override
     public void atualizarUsuario(Usuario usuario){
-        Scanner scan = new Scanner(System.in);
-        for (int i = 0; i < bdLivro.size(); i++) {
-            if (usuario.equals(bdUsuario.getClass())) {
-                System.out.println("O que deseja atualizar? \n" +
-                        "1- Nome \n " +
-                        "2 - Email \n " +
-                        "3 - Endereço \n" +
-                        "4- Id do usuario");
-                int opcao = scan.nextInt();
-                switch (opcao) {
-                    case 1:
-                        System.out.println("Digite o novo nome do usuário:");
-                        String mudaNome = scan.next();
-                        usuario.setNome(mudaNome);
-                        break;
-                    case 2:
-                        System.out.println("Digite o novo nome email:");
-                        String mudaEmail = scan.next();
-                        usuario.setEmail(mudaEmail);
-                        break;
-                    case 3:
-                        System.out.println("Digite o novo endereço do Usuário:");
-                        String mudaEndereco = scan.next();
-                        usuario.setEndereco(mudaEndereco);
-                        break;
-                    case 4:
-                        System.out.println("Digite a nova senha:");
-                        String mudaSenha = scan.next();
-                        usuario.setSenha(mudaSenha);
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                }
-                scan.close();
 
             }
         }
@@ -199,7 +170,7 @@ public class Funcionario extends Usuario implements GerenciamentoDeUsuarios, Ger
     }
 
     @Override
-    public void buscarUsuario(Usuario usuario){
+    public Usuario buscarUsuario(Usuario usuario){
         try {
             for (int i = 0; i < bdUsuario.size(); i++) {
                 if (usuario.equals(bdUsuario.get(i))) {

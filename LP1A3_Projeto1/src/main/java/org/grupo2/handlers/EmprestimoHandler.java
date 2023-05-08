@@ -6,7 +6,6 @@ import org.grupo2.modelos.Biblioteca;
 import org.grupo2.modelos.Cliente;
 import org.grupo2.modelos.Emprestimo;
 import org.grupo2.modelos.Livro;
-import org.grupo2.modelos.Funcionario;
 
 import java.io.IOException;
 import java.io.OutputStream;

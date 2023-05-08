@@ -40,7 +40,8 @@ public class EmprestimoHandler implements HttpHandler {
     }
 
     // CREATE
-    private void handlePostEmprestimo(HttpExchange exchange) throws IOException {
+    private void handlePostEmprestimo(HttpExchange exchange) throws Exception {
+        Funcionario funcionario = new Funcionario();
         String requestBody = new String(exchange.getRequestBody().readAllBytes());
         ArrayList<String> arrayListEmprestimo = Emprestimo.arrayListFromJson(requestBody);
         int emprestimoId = Integer.parseInt(arrayListEmprestimo.get(0));
@@ -48,26 +49,13 @@ public class EmprestimoHandler implements HttpHandler {
         Cliente cliente = Biblioteca.getClientes().get(Integer.parseInt(arrayListEmprestimo.get(2)));
         Instant dataEmprestimo = Instant.parse(arrayListEmprestimo.get(3));
         Instant dataDevolucao = Instant.parse(arrayListEmprestimo.get(4));
-        Emprestimo emprestimo = new Emprestimo(emprestimoId, livro, cliente, dataEmprestimo, dataDevolucao);
-        emprestimo.setId(proximoId);
-        proximoId++;
-        Biblioteca.getEmprestimos().put(emprestimo.getId(), emprestimo);
+        Emprestimo emprestimo = funcionario.realizarEmprestimo(emprestimoId, livro, cliente, dataEmprestimo, dataDevolucao);
         sendResponse(exchange, emprestimo.toJson(), 201);
     }
 
     // READ ALL
     private void handleGetEmprestimos(HttpExchange exchange) throws IOException {
-        StringBuilder response = new StringBuilder();
-        response.append("[");
-        for (Emprestimo emprestimo : Biblioteca.getEmprestimos().values()) {
-            response.append(emprestimo.toJson());
-            response.append(",");
-        }
-        if (Biblioteca.getEmprestimos().size() > 0) {
-            response.deleteCharAt(response.length() - 1);
-        }
-        response.append("]");
-        sendResponse(exchange, response.toString());
+        sendResponse(exchange, Biblioteca.listarEmprestimos().toString());
     }
 
     // READ

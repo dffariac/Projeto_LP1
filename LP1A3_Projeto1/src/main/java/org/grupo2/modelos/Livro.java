@@ -121,6 +121,10 @@ public class Livro {
     public static boolean livroDisponivel(Livro livro) {
         return livro.getNumExemplaresDisponiveis() > 0;
     }
+    
+    public static boolean existeReservaPorLivroECliente(Livro livro, Cliente cliente) throws Exception {
+        return Objects.nonNull(Biblioteca.procurarReservaPorLivroECliente(livro, cliente));
+    }
 
     public String toJson() {
         return "{\"id\": " + this.getId() + ", \"titulo\": \"" + this.getTitulo() +

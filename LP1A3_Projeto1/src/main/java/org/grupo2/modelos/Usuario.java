@@ -77,6 +77,20 @@ public abstract class Usuario{
         Biblioteca.salvarEmprestimo(emprestimo);
         System.out.println("Emprestimo realizado com sucesso");
     }
+   
+    // Versao para o handler
+//     public Emprestimo emprestarLivro(int id, Livro livro, Cliente cliente, Instant dataEmprestimo, Instant dataDevolucao) throws Exception {
+//         try {
+//             Biblioteca.existeEmprestimoPorId(id);
+//             livro.emprestar();
+//             if (Reserva.existeReservaPorLivroECliente(livro, cliente)) {
+//                 cancelarReserva(livro, cliente);
+//             }
+//             return Biblioteca.salvarEmprestimo(new Emprestimo(id, livro, cliente, dataEmprestimo, dataDevolucao));
+//         } catch (Exception e) {
+//             throw new Exception(e.getMessage());
+//         }
+//     }
 
     public void devolverLivro(Livro livro) throws Exception {
         if (Livro.devolver(livro)) {
@@ -95,10 +109,10 @@ public abstract class Usuario{
         System.out.println("Livro reservado.");
     }
 
-    public void cancelarReserva(Livro livro, Cliente cliente) throws Exception {
-        Optional<Reserva> reservaOptional = Biblioteca.procurarReservaPorLivroECliente(livro, cliente);
-        reservaOptional.ifPresent(Biblioteca::cancelarReserva);
-        if (reservaOptional.isPresent()) {
+    public static void cancelarReserva(Livro livro, Cliente cliente) throws Exception {
+        Reserva reserva = Biblioteca.procurarReservaPorLivroECliente(livro, cliente);
+        if (Objects.nonNull(reserva)) {
+            reserva.deletarReserva();
             devolverLivro(livro);
         }
     }

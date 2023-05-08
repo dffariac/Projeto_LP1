@@ -47,17 +47,7 @@ public class ClienteHandler implements HttpHandler {
 
     // READ ALL
     private void handleGetClientes(HttpExchange exchange) throws IOException {
-        StringBuilder response = new StringBuilder();
-        response.append("[");
-        for (Cliente cliente : Biblioteca.getClientes().values()) {
-            response.append(cliente.toJson());
-            response.append(",");
-        }
-        if (Biblioteca.getClientes().size() > 0) {
-            response.deleteCharAt(response.length() - 1);
-        }
-        response.append("]");
-        sendResponse(exchange, response.toString());
+        sendResponse(exchange, Biblioteca.listarClientes().toString());
     }
 
     // READ

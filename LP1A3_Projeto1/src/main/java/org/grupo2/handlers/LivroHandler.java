@@ -45,17 +45,7 @@ public class LivroHandler implements HttpHandler {
 
     // READ ALL
     private void handleGetLivros(HttpExchange exchange) throws IOException {
-        StringBuilder response = new StringBuilder();
-        response.append("[");
-        for (Livro livro : Biblioteca.getLivros().values()) {
-            response.append(livro.toJson());
-            response.append(",");
-        }
-        if (Biblioteca.getLivros().size() > 0) {
-            response.deleteCharAt(response.length() - 1);
-        }
-        response.append("]");
-        sendResponse(exchange, response.toString());
+        sendResponse(exchange, Biblioteca.listarLivros().toString());
     }
 
     // READ
